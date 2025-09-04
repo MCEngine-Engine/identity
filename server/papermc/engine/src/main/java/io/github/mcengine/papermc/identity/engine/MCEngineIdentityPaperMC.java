@@ -1,0 +1,95 @@
+package io.github.mcengine.papermc.identity.engine;
+
+import io.github.mcengine.api.core.MCEngineCoreApi;
+import io.github.mcengine.api.core.Metrics;
+import io.github.mcengine.common.identity.MCEngineIdentityCommon;
+import io.github.mcengine.common.identity.command.MCEngineIdentityCommand;
+import io.github.mcengine.common.identity.listener.MCEngineIdentityListener;
+import org.bukkit.plugin.java.JavaPlugin;
+
+/**
+ * Main PaperMC plugin class for MCEngineIdentity.
+ */
+public class MCEngineIdentityPaperMC extends JavaPlugin {
+
+    /** Identity common API singleton. */
+    private MCEngineIdentityCommon api;
+
+    /**
+     * Called when the plugin is enabled.
+     */
+    @Override
+    public void onEnable() {
+        new Metrics(this, 27167);
+        saveDefaultConfig(); // Save config.yml if it doesn't exist
+
+        boolean enabled = getConfig().getBoolean("enable", false);
+        if (!enabled) {
+            getLogger().warning("Plugin is disabled in config.yml (enable: false). Disabling plugin...");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
+        api = new MCEngineIdentityCommon(this);
+
+        // Register command executor
+        if (getCommand("identity") != null) {
+            getCommand("identity").setExecutor(new MCEngineIdentityCommand(api));
+        } else {
+            getLogger().warning("Command 'identity' not found in plugin.yml");
+        }
+
+        // Register listener to ensure {uuid}-0 alt exists on join
+        getServer().getPluginManager().registerEvents(new MCEngineIdentityListener(api), this);
+
+        // Load extensions (kept unchanged in structure, but swapped to identity namespaces)
+        MCEngineCoreApi.loadExtensions(
+            this,
+            "io.github.mcengine.api.identity.extension.library.IMCEngineIdentityLibrary",
+            "libraries",
+            "Library"
+        );
+        MCEngineCoreApi.loadExtensions(
+            this,
+            "io.github.mcengine.api.identity.extension.api.IMCEngineIdentityAPI",
+            "apis",
+            "API"
+        );
+        MCEngineCoreApi.loadExtensions(
+            this,
+            "io.github.mcengine.api.identity.extension.agent.IMCEngineIdentityAgent",
+            "agents",
+            "Agent"
+        );
+        MCEngineCoreApi.loadExtensions(
+            this,
+            "io.github.mcengine.api.identity.extension.addon.IMCEngineIdentityAddOn",
+            "addons",
+            "AddOn"
+        );
+        MCEngineCoreApi.loadExtensions(
+            this,
+            "io.github.mcengine.api.identity.extension.dlc.IMCEngineIdentityDLC",
+            "dlcs",
+            "DLC"
+        );
+
+        // Check for plugin updates
+        MCEngineCoreApi.checkUpdate(
+            this,
+            getLogger(),
+            "github",
+            "MCEngine-Engine",
+            "identity",
+            getConfig().getString("github.token", "null")
+        );
+    }
+
+    /**
+     * Called when the plugin is disabled.
+     */
+    @Override
+    public void onDisable() {
+        // Plugin shutdown logic (if any) can go here
+    }
+}
