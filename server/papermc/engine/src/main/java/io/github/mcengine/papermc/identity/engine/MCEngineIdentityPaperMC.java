@@ -5,6 +5,7 @@ import io.github.mcengine.api.core.Metrics;
 import io.github.mcengine.common.identity.MCEngineIdentityCommon;
 import io.github.mcengine.common.identity.command.MCEngineIdentityCommand;
 import io.github.mcengine.common.identity.listener.MCEngineIdentityListener;
+import io.github.mcengine.common.identity.tabcompleter.MCEngineIdentityTabCompleter;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -42,6 +43,7 @@ public class MCEngineIdentityPaperMC extends JavaPlugin {
         // Register command executor
         if (getCommand("identity") != null) {
             getCommand("identity").setExecutor(new MCEngineIdentityCommand(api));
+            getCommand("identity").setTabCompleter(new MCEngineIdentityTabCompleter(api));
         } else {
             getLogger().warning("Command 'identity' not found in plugin.yml");
         }
