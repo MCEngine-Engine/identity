@@ -6,8 +6,8 @@ dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT'
 
     implementation 'io.github.mcengine:core-api:2025.0.9-5'
-    implementation "io.github.mcengine:mcengine-identity-api:2025.0.9-5"
-    implementation "io.github.mcengine:mcengine-identity-common:2025.0.9-5-1"
+    implementation "io.github.mcengine:identity-api:2025.0.9-5"
+    implementation "io.github.mcengine:identity-common:2025.0.9-5-1"
 }
 
 processResources {
