@@ -9,11 +9,15 @@ import io.github.mcengine.common.identity.tabcompleter.MCEngineIdentityTabComple
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * Main PaperMC plugin class for MCEngineIdentity.
+ * Main SpigotMC plugin class for MCEngineIdentity.
  */
 public class MCEngineIdentitySpigotMC extends JavaPlugin {
 
-    /** Identity common API singleton. */
+    /**
+     * Identity common API instance that wires the Bukkit plugin
+     * to the selected database implementation and exposes
+     * identity/alt operations and async pools.
+     */
     private MCEngineIdentityCommon api;
 
     /**
@@ -99,6 +103,9 @@ public class MCEngineIdentitySpigotMC extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        // Plugin shutdown logic (if any) can go here
+        // Ensure background executors are stopped cleanly.
+        if (api != null) {
+            api.shutdownAsyncPools();
+        }
     }
 }
