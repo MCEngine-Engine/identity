@@ -11,3 +11,9 @@ commands:
 permissions:
   mcengine.identity.use:
     default: true
+  mcengine.identity.limit.add:
+    default: op
+  mcengine.identity.limit.get:
+    default: true
+  mcengine.identity.limit.get.players:
+    default: op
