@@ -7,7 +7,7 @@ dependencies {
 
     implementation 'io.github.mcengine:core-api:2025.0.9-7'
     implementation 'io.github.mcengine:identity-api:2025.0.9-7'
-    implementation 'io.github.mcengine:identity-common:2025.0.9-7-4'
+    implementation 'io.github.mcengine:identity-common:2025.0.9-7-5'
 }
 
 processResources {
