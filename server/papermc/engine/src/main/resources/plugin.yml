@@ -17,3 +17,5 @@ permissions:
     default: true
   mcengine.identity.limit.get.players:
     default: op
+  mcengine.identity.permission.add:
+    default: op
