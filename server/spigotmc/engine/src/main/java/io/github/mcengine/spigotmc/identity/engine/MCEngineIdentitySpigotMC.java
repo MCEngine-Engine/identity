@@ -35,9 +35,11 @@ public class MCEngineIdentitySpigotMC extends JavaPlugin {
             return;
         }
 
-        final String licenseType = getConfig().getString("license", "free");
-        if (!"free".equalsIgnoreCase(licenseType)) {
-            getLogger().warning("License is not 'free'. Disabling MCEngineIdentity.");
+        String license = getConfig().getString("licenses.license", "free"); 
+        if (!license.equalsIgnoreCase("free")) { 
+            getLogger().warning("Plugin is disabled in config.yml.");
+            getLogger().warning("Invalid license.");
+            getLogger().warning("Check license or use \"free\".");
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
